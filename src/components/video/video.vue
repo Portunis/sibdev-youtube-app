@@ -1,6 +1,6 @@
 <template>
   <div class="video__items " :class="{'list' : list }">
-    <VideoItem v-for="itemVideo in getVideo" :itemVideo="itemVideo" :list="list" />
+    <VideoItem v-for="itemVideo in getVideo" :key="itemVideo.id" :itemVideo="itemVideo" :list="list" />
 
   </div>
 

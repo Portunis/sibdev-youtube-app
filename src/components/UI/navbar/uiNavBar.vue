@@ -8,7 +8,7 @@
         <router-link to="/favorite">Избранное</router-link>
       </div>
       <div class="navbar__element-right">
-        <a>Выйти</a>
+        <a @click="unLoggedUser">Выйти</a>
       </div>
     </div>
   </div>
@@ -17,9 +17,16 @@
 
 <script>
 import UiLogo from "@/components/UI/logo/uiLogo";
+import {mapActions} from "vuex";
 export default {
   name: "uiNavBar",
-  components: {UiLogo}
+  components: {UiLogo},
+  methods:{
+    ...mapActions({
+      unLoggedUser: 'unLoggedUser'
+    })
+  }
+
 }
 </script>
 

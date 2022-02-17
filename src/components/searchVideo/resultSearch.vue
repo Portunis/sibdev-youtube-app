@@ -3,7 +3,7 @@
     <h2>Поиск видео</h2>
     <div class="search">
 
-      <UiInput type="text" class="search__input"  v-model:model-value="searchInputRequest"    />
+      <UiInput type="text" class="search__input"  v-model:model-value="searchInputRequest"   />
       <div @click="showDialog" class="search__favorite">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -13,15 +13,15 @@
 
       </div>
       <ui-button @click="searchVideo" class="search__button">Найти</ui-button>
-      <Modal v-model:show="dialogVisible">
-        <SaveSearchRequest :searchRequest="resultNameVideo"/>
+      <Modal v-model:show="dialogVisible" >
+        <SaveSearchRequest :searchRequest="resultNameVideo" @create="createFavoritesQuery"/>
       </Modal>
     </div>
     <div class="results">
       <div class="results__filter">
         <div class="results__query">
           <p>Видео по запросу <strong>"{{resultNameVideo}}"</strong></p>
-          <span>7230</span>
+          <span>{{countSearchVideo}}</span>
         </div>
         <div class="results__view">
 
@@ -90,17 +90,25 @@ export default {
   },
   computed:{
     ...mapState({
-      resultNameVideo: state => state.nameVideo
+      resultNameVideo: state => state.nameVideo,
+      countSearchVideo: state => state.countVideoSearch
     })
   },
   methods: {
     ...mapActions({
       fetchAPI: 'fetchAPI',
+      saveSearch: 'saveSearchRequest'
 
     }),
+    createFavoritesQuery(savePost){
+      this.saveSearch(savePost)
+      this.dialogVisible = false;
+    },
     searchVideo(){
+      console.log('search:',this.searchInputRequest)
       const nameVideo = this.searchInputRequest
       this.fetchAPI(nameVideo)
+
 
     },
     showDialog() {

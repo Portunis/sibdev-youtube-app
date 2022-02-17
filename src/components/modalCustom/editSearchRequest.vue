@@ -1,31 +1,31 @@
 <template>
   <div class="modal">
-    <h2>Сохранить запрос</h2>
+    <h2>Изменить запрос</h2>
     <form>
       <div>
         <label>Запрос</label>
-        <UiInput class="modalInput" disabled type="text" placeholder="Запрос" :model-value="searchRequest"/>
+        <UiInput class="modalInput"  type="text" placeholder="Запрос" v-model="editItem.title" />
       </div>
       <div>
         <label>Название</label>
-        <UiInput class="modalInput" type="text" placeholder="Запрос" v-model="savePost.name"/>
+        <UiInput class="modalInput" type="text" placeholder="Запрос" v-model="editItem.name" />
       </div>
       <div>
 
         <p>Сортировать по</p>
-        <UiSelect class="modalInput" v-model:model-value="savePost.sortedType"/>
+        <UiSelect class="modalInput" v-model="editItem.sortedType"/>
       </div>
       <div>
         <label>Максимальное количество</label>
         <div class="modalInputRange">
-          <UiInput class="modalInputRange__slider" type="range" min="0" max="50" step="1" v-model="savePost.maxResults" :value="savePost.maxResults"/>
-          <UiInput class="modalInputRange__number" type="number" disabled v-model="savePost.maxResults" :value="savePost.maxResults"/>
+          <UiInput class="modalInputRange__slider" type="range" min="0" max="50" step="1" v-model="editItem.maxResults"/>
+          <UiInput class="modalInputRange__number" type="number" disabled v-model="editItem.maxResults"/>
         </div>
       </div>
       <div>
 
-        <UiButton class="modalInput__noSave" @click.prevent>Не сохранять</UiButton>
-        <UiButton class="modalInput__save" @click.prevent="createFavoritesQuery">Сохранить</UiButton>
+        <UiButton class="modalInput__noSave" @click.prevent>Не изменять</UiButton>
+        <UiButton class="modalInput__save" @click.prevent="updateSearchQuery">Изменить</UiButton>
       </div>
     </form>
   </div>
@@ -38,36 +38,21 @@ import UiSelect from "@/components/UI/select/uiSelect";
 import {mapActions} from "vuex";
 
 export default {
-  name: "saveSearchRequest",
+  name: "editSearchRequest",
   components: {UiSelect, UiButton, UiInput},
   data() {
     return {
-      value: 12,
-      savePost: {
-        title: this.searchRequest,
-        name: '',
-        sortedType: '',
-        maxResults: '',
 
-      }
     }
   },
-  props: {
-    searchRequest: [String]
+  props:{
+    editItem: [Object]
   },
 
   methods: {
-    createFavoritesQuery(){
-      this.savePost.userId = this.$store.state.userId
-      this.savePost.id = Date.now()
-      this.$emit('create', this.savePost)
-      console.log('savepost', this.savePost)
-      this.savePost = {
-        title: '',
-        name: '',
-        sortedType: '',
-        maxResults: '',
-      }
+
+    updateSearchQuery(){
+      this.$emit('edit', this.editItem)
     }
   }
 }
@@ -119,15 +104,15 @@ p{
     width: 210px;
     padding: 14px 20px;
   }
- &__noSave{
-   width: 210px;
-   border: 1px solid #1390E5;
-   background: none;
-   padding: 14px 20px;
+  &__noSave{
+    width: 210px;
+    border: 1px solid #1390E5;
+    background: none;
+    padding: 14px 20px;
 
-   margin: 20px ;
-   color: #1390E5;
- }
+    margin: 20px ;
+    color: #1390E5;
+  }
 }
 
 .modalInputRange {

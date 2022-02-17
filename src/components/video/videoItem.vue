@@ -3,8 +3,8 @@
    <img class="video__img" :src="`${itemVideo.thumbnails.medium.url}`" />
 
     <div class="item__span " :class="{'list' : list }">
-      <p>{{ itemVideo.title}}</p>
-      <span>{{ itemVideo.channelTitle}}</span>
+      <p>{{ itemVideo.title.substring(0, 50) + '..'}}</p>
+      <span>{{ itemVideo.channelTitle.substring(0, 20) + '..'}}</span>
       <span>786 тыс. просмотров</span>
     </div>
   </div>
@@ -29,7 +29,7 @@ export default {
 .video{
   &__img{
     width: 245px;
-    height: auto;
+    height: 140px;
     background-size: cover;
   }
   &__item.list{

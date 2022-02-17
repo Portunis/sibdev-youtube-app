@@ -1,0 +1,14 @@
+[
+  {
+    "id": 123,
+    "login": "test",
+    "password": "test",
+    "token": "sdfgdfgdsfgdsfgfsdgdsadsfads"
+  },
+  {
+    "id": 125,
+    "login": "qwe",
+    "password": "qwe",
+    "token": "qweqweqeqweqweqweqweqw"
+  }
+]

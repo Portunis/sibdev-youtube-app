@@ -8,16 +8,16 @@
      <form class="form">
        <div class="form__login">
          <label class="form__inputLabel">Логин</label>
-        <ui-input  type="text" />
+        <ui-input  type="text" v-model="auth.login"/>
        </div>
        <div class="form__password">
          <label class="form__inputLabel ">Пароль</label>
-         <ui-input  :type="passwordType" />
+         <ui-input  :type="passwordType" v-model="auth.password" />
          <a @click="switchPasswordType"  class="form__passwordVisible">
            <password-eye  :visible="passwordType" :active="activeFocus"/>
          </a>
        </div>
-       <ui-button @click.prevent>Войти</ui-button>
+       <ui-button @click.prevent="loggedUser">Войти</ui-button>
      </form>
     </div>
   </div>
@@ -28,16 +28,27 @@ import PasswordEye from "@/components/UI/input/passwordEye";
 import UiButton from "@/components/UI/button/uiButton";
 import UiInput from "@/components/UI/input/uiInput";
 import UiLogo from "@/components/UI/logo/uiLogo";
+import {mapActions} from "vuex";
 export default {
   name: "auth",
   components: {UiLogo, UiInput, UiButton, PasswordEye},
   data(){
     return{
       passwordType: 'password',
-      activeFocus: false
+      activeFocus: false,
+      auth: {
+        login: '',
+        password: '',
+      }
     }
   },
   methods:{
+    ...mapActions({
+      logged: 'loggedUser'
+    }),
+    loggedUser(){
+      this.logged(this.auth)
+    },
     switchPasswordType(){
       this.passwordType = this.passwordType === 'password'  ? 'text' : 'password';
       console.log(this.passwordType)

@@ -7,7 +7,7 @@
       <ui-button class="search-box__button" @click="searchVideo">Найти</ui-button>
     </div>
   </div>
-  <ResultSearch v-if="GET_VIDEOS.length" :getVideo="GET_VIDEOS"/>
+  <ResultSearch v-if="GET_VIDEOS.length"   :getVideo="GET_VIDEOS"/>
 </div>
 </template>
 
