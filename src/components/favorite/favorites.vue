@@ -11,8 +11,8 @@
 
   </transition>
   <transition name="notification">
-    <UiNotification v-if="notification" class="notification__updateSave">
-      <p>Данные успешно обновлены</p>
+    <UiNotification v-if="notification">
+      Данные успешно обновлены
 
     </UiNotification>
   </transition>
@@ -96,19 +96,5 @@ h2 {
   margin: 40px 0 12px;
 
 }
-.notification{
 
-  &__updateSave{
-    position: absolute;
-    top: 100px;
-    right: 50px;
-
-    width: auto;
-    height: 72px;
-    padding: 28px 30px;
-
-
-  }
-
-}
 </style>

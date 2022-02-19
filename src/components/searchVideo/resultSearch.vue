@@ -26,8 +26,8 @@
       </Modal>
       </transition>
     </div>
-    <div class="results">
-      <div class="results__filter">
+    <div v-if="!isLoading" class="results">
+      <div  class="results__filter">
         <div class="results__query">
           <p>Видео по запросу <strong>"{{resultNameVideo}}"</strong></p>
           <span>{{countSearchVideo}}</span>
@@ -66,9 +66,11 @@
 
         </div>
       </div>
-      <VideoResults v-if="!isLoading"  :getVideo="getVideo" :list="listOn"/>
-      <div v-if="isLoading">Загружаю</div>
+      <VideoResults   :getVideo="getVideo" :list="listOn"/>
+
     </div>
+    <UiLoading v-if="isLoading" >Загружаю видео...</UiLoading>
+    <UiErrorNotification v-if="isErrorFetch" >Произошла ошибка запроса, попробуйте позже</UiErrorNotification>
   </div>
 </template>
 
@@ -82,10 +84,14 @@ import SaveSearchRequest from "@/components/modalCustom/saveSearchRequest";
 import { mapActions, mapState} from 'vuex'
 import UiNotification from "@/components/UI/notification/uiNotification";
 import VideoResults from "@/components/video/videoResults";
+import UiLoading from "@/components/UI/loading/uiLoading";
+import UiErrorNotification from "@/components/UI/error/uiErrorNotification";
 
 export default {
   name: "resultSearch",
-  components: {VideoResults, UiNotification, SaveSearchRequest, Modal, VideoPreview, UiButton, UiInput},
+  components: {
+    UiErrorNotification,
+    UiLoading, VideoResults, UiNotification, SaveSearchRequest, Modal, VideoPreview, UiButton, UiInput},
   data() {
     return {
       listOn: false,
@@ -107,7 +113,8 @@ export default {
     ...mapState({
       resultNameVideo: state => state.nameVideo,
       countSearchVideo: state => state.countVideoSearch,
-      isLoading: state => state.isLoading
+      isLoading: state => state.isLoading,
+      isErrorFetch: state => state.isErrorFetch
     })
   },
   methods: {

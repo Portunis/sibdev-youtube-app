@@ -3,5 +3,6 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import '@/assets/scss/style.scss'
+import Vue3Lottie from 'vue3-lottie'
 
-createApp(App).use(store).use(router).mount('#app')
+createApp(App).use(store).use(router).use(Vue3Lottie).mount('#app')

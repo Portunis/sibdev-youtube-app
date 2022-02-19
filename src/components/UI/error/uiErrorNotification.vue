@@ -1,13 +1,13 @@
 <template>
-<div class="notification">
-  <p><slot></slot></p>
+  <div class="notification">
+    <p> <slot></slot></p>
 
-</div>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "uiNotification"
+  name: "uiErrorNotification"
 }
 </script>
 
@@ -25,6 +25,7 @@ export default {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
 
+
   p{
     font-family: PT Sans, sans-serif;
     font-style: normal;
@@ -32,13 +33,7 @@ export default {
     line-height: 24px;
     text-align: center;
   }
-  a{
-    font-family: PT Sans, sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    line-height: 24px;
 
-  }
 }
 
 </style>

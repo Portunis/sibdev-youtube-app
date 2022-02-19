@@ -7,7 +7,10 @@
       <ui-button class="search-box__button" @click="searchVideo">Найти</ui-button>
     </div>
   </div>
-  <ResultSearch v-if="GET_VIDEOS.length"   :getVideo="GET_VIDEOS"/>
+  <ResultSearch v-if="GET_VIDEOS && GET_VIDEOS.length "   :getVideo="GET_VIDEOS"/>
+  <transition name="notification">
+  <UiErrorNotification v-if="isErrorFetch" >Произошла ошибка запроса, попробуйте позже</UiErrorNotification>
+  </transition>
 </div>
 </template>
 
@@ -15,19 +18,24 @@
 import UiInput from "@/components/UI/input/uiInput";
 import UiButton from "@/components/UI/button/uiButton";
 import ResultSearch from "@/components/searchVideo/resultSearch";
-import {mapActions, mapGetters} from "vuex"
+import {mapActions, mapGetters, mapState} from "vuex"
+import UiErrorNotification from "@/components/UI/error/uiErrorNotification";
 export default {
   name: "searchVideo",
-  components: {ResultSearch, UiButton, UiInput},
+  components: {UiErrorNotification, ResultSearch, UiButton, UiInput},
   data(){
     return{
       post:{
         title: '',
         maxResults: 12
-      }
+      },
+
     }
   },
   computed: {
+    ...mapState({
+      isErrorFetch: state => state.isErrorFetch
+    }),
     ...mapGetters([
         'GET_VIDEOS'
     ])
@@ -40,7 +48,6 @@ export default {
     searchVideo(){
       const nameVideo = this.post
       this.fetchAPI(nameVideo)
-
     },
   }
 }

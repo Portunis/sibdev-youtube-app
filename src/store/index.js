@@ -4,10 +4,11 @@ import users from '@/localAPI/users.json'
 import router from "@/router";
 
 const QUERY_URL = 'https://www.googleapis.com/youtube/v3/search?' //QUERY URL YOUTUBE
-const API_KEY = 'AIzaSyDk5eTYsCiG5FYv2PdKftM5WkwEEaaNiGQ' //API YOUTUBE KEY
+const API_KEY = 'AIzaSyB0TF09lrWBfkntzfKz4SGuwBGeTzh_L_A' //API YOUTUBE KEY
 
 export default createStore({
     state: {
+        isErrorFetch: false,
         isLoading: false,
         editObj: [], //Редактируемый объект из избранного
         userId: parseInt(localStorage.getItem("userInfo")) || null, // id пользователя для поиска постов
@@ -52,6 +53,9 @@ export default createStore({
         },
         isLoading(state, payload){
             return state.isLoading = payload
+        },
+        isErrorFetch(state, payload){
+            return state.isErrorFetch = payload
         }
     },
     getters: {
@@ -87,9 +91,12 @@ export default createStore({
                 dispatch('sortedVideo', data)
                 router.push('/')
             }catch (e){
-                console.log(e)
+                commit('isErrorFetch', true)
             }finally {
                 commit('isLoading', false)
+                setTimeout(()=>{
+                    commit('isErrorFetch', false)
+                }, 5000)
             }
 
 
