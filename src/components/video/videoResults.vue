@@ -10,7 +10,7 @@
 
 import VideoItem from "@/components/video/videoItem";
 export default {
-  name: "video",
+  name: "videoResults",
   components: {VideoItem},
   props: {
     list: [Boolean],
@@ -27,6 +27,7 @@ export default {
     grid-template-columns: repeat(4, 1fr) ;
     grid-auto-rows: 275px;
     justify-items: center;
+
   }
   &__items.list{
     display: block;
@@ -34,5 +35,25 @@ export default {
   }
 
 }
-
+@media screen and (max-width: 768px){
+  .video__items{
+    grid-template-columns: repeat(3, 1fr) ;
+  }
+  .video__item.list{
+    p{
+      width: 510px;
+    }
+  }
+}
+@media screen and (max-width: 320px){
+  .video__items{
+    grid-template-columns: repeat(1, 1fr);
+    grid-auto-rows: 303px;
+  }
+  .video__item.list{
+    p{
+      width: 510px;
+    }
+  }
+}
 </style>

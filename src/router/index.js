@@ -1,25 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Index from '@/views/index'
-import Main from "@/views/main";
+import searchPage from "@/views/searchPage";
 import Favorite from "@/views/favorite";
 const routes = [
-  {
-    path: '/',
-    name: 'Index',
-    component: Index,
-    meta: {
-      requiresAuth: true
-    }
-  },
+
   {
     path: '/auth',
     name: 'Index',
     component: Index
   },
   {
-    path: '/search',
-    name: 'Main',
-    component: Main,
+    path: '/',
+    name: 'searchPage',
+    component: searchPage,
     meta: {
       requiresAuth: true
     }

@@ -1,13 +1,12 @@
 export default {
-    props:{
+    props: {
         show: {
             type: Boolean,
             default: false
-}
-
+        }
     },
     methods: {
-        hideDialog(){
+        hideDialog() {
             this.$emit('update:show', false)
         }
     },

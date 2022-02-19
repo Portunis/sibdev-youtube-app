@@ -108,4 +108,25 @@ export default {
     right: 103px;
   }
 }
+
+@media screen and (max-width: 320px){
+ .auth{
+   width: 304px;
+   height: 520px;
+   left: calc(50% - 304px/2);
+   top: calc(50% - 520px/2);
+ }
+  .form{
+    input{
+      width: 284px;
+    }
+  }
+
+  .form__passwordVisible{
+    right: 20px;
+  }
+  .form__inputLabel{
+    width: 284px;
+  }
+}
 </style>

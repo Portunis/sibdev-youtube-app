@@ -3,7 +3,7 @@
     <h2>Поиск видео</h2>
     <div class="search">
 
-      <UiInput type="text" class="search__input"  v-model:model-value="searchInputRequest"   />
+      <UiInput type="text" class="search__input"  v-model:model-value="post.title"  placeholder="Что хотите посмотреть ?" />
       <div @click="showDialog" class="search__favorite">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -12,10 +12,19 @@
         </svg>
 
       </div>
+      <transition name="notification">
+      <UiNotification  v-if="notification" class="notification__saveSearch">
+
+        <p>Поиск сохранён в разделе «Избранное»</p>
+        <router-link to="/favorite">Перейти в избранное</router-link>
+      </UiNotification>
+      </transition>
       <ui-button @click="searchVideo" class="search__button">Найти</ui-button>
+      <transition name="notification">
       <Modal v-model:show="dialogVisible" >
-        <SaveSearchRequest :searchRequest="resultNameVideo" @create="createFavoritesQuery"/>
+        <SaveSearchRequest :searchRequest="resultNameVideo" @create="createFavoritesQuery"  @closeModal="closeDialog"/>
       </Modal>
+      </transition>
     </div>
     <div class="results">
       <div class="results__filter">
@@ -27,7 +36,7 @@
 
           <svg @click="listActive" width="24" height="24" viewBox="0 0 24 24" fill="none"
                xmlns="http://www.w3.org/2000/svg">
-            <g opacity="0.3">
+            <g >
               <path d="M8 6H21" stroke="#272727" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M8 12H21" stroke="#272727" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M8 18H21" stroke="#272727" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -42,7 +51,7 @@
 
           <svg @click="listDisable" width="24" height="24" viewBox="0 0 24 24" fill="none"
                xmlns="http://www.w3.org/2000/svg">
-
+            <g >
             <path d="M10 5H5V10H10V5Z" stroke="#272727" stroke-width="2" stroke-linecap="round"
                   stroke-linejoin="round"/>
             <path d="M19 5H14V10H19V5Z" stroke="#272727" stroke-width="2" stroke-linecap="round"
@@ -51,14 +60,14 @@
                   stroke-linejoin="round"/>
             <path d="M10 14H5V19H10V14Z" stroke="#272727" stroke-width="2" stroke-linecap="round"
                   stroke-linejoin="round"/>
-
+            </g>
 
           </svg>
 
         </div>
       </div>
-      <Video  :getVideo="getVideo" :list="listOn"/>
-
+      <VideoResults v-if="!isLoading"  :getVideo="getVideo" :list="listOn"/>
+      <div v-if="isLoading">Загружаю</div>
     </div>
   </div>
 </template>
@@ -67,19 +76,25 @@
 import UiInput from "@/components/UI/input/uiInput";
 import UiButton from "@/components/UI/button/uiButton";
 import VideoPreview from "@/components/UI/testUI/videoPreview/videoPreview";
-import Video from "@/components/video/video";
+
 import Modal from "@/components/UI/modal/modal";
 import SaveSearchRequest from "@/components/modalCustom/saveSearchRequest";
 import { mapActions, mapState} from 'vuex'
+import UiNotification from "@/components/UI/notification/uiNotification";
+import VideoResults from "@/components/video/videoResults";
 
 export default {
   name: "resultSearch",
-  components: {SaveSearchRequest, Modal, Video, VideoPreview, UiButton, UiInput},
+  components: {VideoResults, UiNotification, SaveSearchRequest, Modal, VideoPreview, UiButton, UiInput},
   data() {
     return {
       listOn: false,
       dialogVisible: false,
-      searchInputRequest: ''
+      post:{
+        title: '',
+        maxResults: 12
+      },
+      notification: false,
     }
   },
   props: {
@@ -91,7 +106,8 @@ export default {
   computed:{
     ...mapState({
       resultNameVideo: state => state.nameVideo,
-      countSearchVideo: state => state.countVideoSearch
+      countSearchVideo: state => state.countVideoSearch,
+      isLoading: state => state.isLoading
     })
   },
   methods: {
@@ -103,13 +119,20 @@ export default {
     createFavoritesQuery(savePost){
       this.saveSearch(savePost)
       this.dialogVisible = false;
+      this.notification = true;
+      setTimeout(()=>{
+        this.notification = false;
+      }, 5000)
     },
     searchVideo(){
-      console.log('search:',this.searchInputRequest)
-      const nameVideo = this.searchInputRequest
+      console.log('search:',this.post)
+      const nameVideo = this.post
       this.fetchAPI(nameVideo)
 
 
+    },
+    closeDialog(){
+      this.dialogVisible = false;
     },
     showDialog() {
       this.dialogVisible = true;
@@ -197,5 +220,54 @@ p {
     }
   }
 
+}
+
+
+.notification{
+
+
+
+
+  &__saveSearch{
+    position: absolute;
+    right: 67px;
+    top: 49px;
+
+    padding: 15px 15px;
+
+   p{
+     font-size: 16px;
+     color: #272727;
+     opacity: 0.5;
+   }
+    a{
+      font-size: 16px;
+      margin: 15px 0 0 0;
+      color: #1390E5;
+    }
+  }
+
+}
+
+@media screen and (max-width: 769px){
+  .notification__saveSearch{
+   width: 230px;
+  }
+  .search__favorite{
+    right: 100px;
+  }
+  .results__query{
+    flex-direction: column;
+    align-items: flex-start;
+    p{
+      font-size: 12px;
+    }
+    span{
+      font-size: 12px;
+    }
+  }
+  .results__filter{
+    align-items: stretch;
+  }
 }
 </style>

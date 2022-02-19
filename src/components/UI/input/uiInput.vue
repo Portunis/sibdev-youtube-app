@@ -42,4 +42,10 @@ export default {
   background: rgba(197, 228, 249, 0.3);
   border: 1px solid #1390E5;
 }
+@media screen and (max-width: 320px){
+  .input{
+    font-size: 16px;
+    padding: 12px 10px 12px 15px;
+  }
+}
 </style>

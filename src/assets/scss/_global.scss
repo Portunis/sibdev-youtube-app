@@ -24,6 +24,7 @@ p{
   font-family: Roboto, sans-serif;
   font-style: normal;
   font-weight: normal;
+  margin: 0;
 }
 span{
   font-family: Roboto, sans-serif;
@@ -83,3 +84,12 @@ input[type="number"]:focus {
   color: rgba(23, 23, 25, 0.3);
 }
 
+.notification-enter-active,
+.notification-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.notification-enter-from,
+.notification-leave-to {
+  opacity: 0;
+}

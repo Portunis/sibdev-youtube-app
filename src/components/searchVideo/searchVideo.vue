@@ -3,7 +3,7 @@
   <div v-if="!GET_VIDEOS.length" class="search">
     <h2>Поиск видео</h2>
     <div class="search-box">
-      <UiInput type="text" class="search-box__input" placeholder="Что хотите посмотреть ?" v-model:model-value="searchInputRequest" />
+      <UiInput type="text" class="search-box__input" placeholder="Что хотите посмотреть ?" v-model:model-value="post.title" />
       <ui-button class="search-box__button" @click="searchVideo">Найти</ui-button>
     </div>
   </div>
@@ -21,7 +21,10 @@ export default {
   components: {ResultSearch, UiButton, UiInput},
   data(){
     return{
-      searchInputRequest:''
+      post:{
+        title: '',
+        maxResults: 12
+      }
     }
   },
   computed: {
@@ -35,7 +38,7 @@ export default {
 
     }),
     searchVideo(){
-      const nameVideo = this.searchInputRequest
+      const nameVideo = this.post
       this.fetchAPI(nameVideo)
 
     },

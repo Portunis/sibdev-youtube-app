@@ -24,7 +24,7 @@
       </div>
       <div>
 
-        <UiButton class="modalInput__noSave" @click.prevent>Не изменять</UiButton>
+        <UiButton class="modalInput__noSave" @click.prevent="closeModal">Не изменять</UiButton>
         <UiButton class="modalInput__save" @click.prevent="updateSearchQuery">Изменить</UiButton>
       </div>
     </form>
@@ -35,7 +35,7 @@
 import UiInput from "@/components/UI/input/uiInput";
 import UiButton from "@/components/UI/button/uiButton";
 import UiSelect from "@/components/UI/select/uiSelect";
-import {mapActions} from "vuex";
+
 
 export default {
   name: "editSearchRequest",
@@ -50,7 +50,9 @@ export default {
   },
 
   methods: {
-
+    closeModal(){
+      this.$emit('closeModal')
+    },
     updateSearchQuery(){
       this.$emit('edit', this.editItem)
     }
@@ -103,6 +105,7 @@ p{
   &__save{
     width: 210px;
     padding: 14px 20px;
+
   }
   &__noSave{
     width: 210px;
@@ -119,12 +122,6 @@ p{
   display: flex;
   align-items: center;
 
-
-
-
-
-
-
   &__number {
     padding: 14px 37px;
     text-align: center;
@@ -133,5 +130,43 @@ p{
     box-sizing: border-box;
     border-radius: 10px;
   }
+}
+@media screen and (max-width: 320px){
+  form{
+    label{
+      margin: 0;
+    }
+    p{
+      margin: 0;
+    }
+  }
+  .modalInput__noSave{
+    font-size: 18px;
+    padding: 13px 14px;
+    margin: 0;
+    width: 139px;
+  }
+  .modalInput__save{
+    font-size: 18px;
+    padding: 13px 14px;
+    width: 139px;
+  }
+
+  .modalInputRange{
+    width: 135px;
+    margin: 5px 0 0 0 ;
+  }
+  .modalInputRange__number{
+    font-size: 20px;
+  }
+  .modalInputRange__slider{
+    margin: 0 13px;
+  }
+    .modalInput{
+      width: 284px;
+      margin: 0 0 24px
+    }
+
+
 }
 </style>

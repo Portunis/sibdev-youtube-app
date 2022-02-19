@@ -2,11 +2,21 @@
 <div class="favorite">
   <h2>Избранное</h2>
   <div class="favorite__items">
-    <FavoriteItem v-for="itemFavorites in GET_SAVE_VIDEOS" :itemFavorites="itemFavorites" @edit="showDialog" @run="runItem"/>
+    <FavoriteItem v-for="itemFavorites in reversedItems" :itemFavorites="itemFavorites" @edit="showDialog" @run="runItem"/>
   </div>
+  <transition name="notification">
   <Modal v-model:show="dialogVisible" >
-    <EditSearchRequest :editItem="editItem" @edit="updateRequestQuery" />
+    <EditSearchRequest :editItem="editItem" @edit="updateRequestQuery" @closeModal="closeDialog"/>
   </Modal>
+
+  </transition>
+  <transition name="notification">
+    <UiNotification v-if="notification" class="notification__updateSave">
+      <p>Данные успешно обновлены</p>
+
+    </UiNotification>
+  </transition>
+
 </div>
 </template>
 
@@ -15,12 +25,14 @@ import FavoriteItem from "@/components/favorite/favoriteItem";
 import {mapActions, mapGetters, mapState} from "vuex";
 import EditSearchRequest from "@/components/modalCustom/editSearchRequest";
 import Modal from "@/components/UI/modal/modal";
+import UiNotification from "@/components/UI/notification/uiNotification";
 export default {
   name: "favorites",
-  components: {Modal, EditSearchRequest, FavoriteItem},
+  components: {UiNotification, Modal, EditSearchRequest, FavoriteItem},
   data(){
     return{
       dialogVisible: false,
+      notification: false,
     }
   },
   created() {
@@ -32,7 +44,10 @@ export default {
     ...mapGetters(['GET_SAVE_VIDEOS']),
     ...mapState({
       editItem: state => state.editObj
-    })
+    }),
+    reversedItems() {
+      return this.GET_SAVE_VIDEOS.slice().reverse();
+    },
 
   },
   methods: {
@@ -41,14 +56,21 @@ export default {
       loadFavorites: 'updateStateCart',
       editSearchQuery: 'getUpdateSearchQuery',
       updateSearch: 'updateSearchQuery',
-      runSearchFavorite: 'getSearchFavorite'
+      fetchAPI: 'fetchAPI',
     }),
     runItem(payload){
-      this.runSearchFavorite(payload)
+      this.fetchAPI(payload)
       console.log('runItem', payload)
     },
     updateRequestQuery(payload){
       this.updateSearch(payload)
+      this.dialogVisible = false;
+      this.notification = true;
+      setTimeout(()=>{
+        this.notification = false
+      },5000)
+    },
+    closeDialog(){
       this.dialogVisible = false;
     },
     showDialog(payload) {
@@ -72,6 +94,21 @@ h2 {
   text-align: left;
   color: #000000;
   margin: 40px 0 12px;
+
+}
+.notification{
+
+  &__updateSave{
+    position: absolute;
+    top: 100px;
+    right: 50px;
+
+    width: auto;
+    height: 72px;
+    padding: 28px 30px;
+
+
+  }
 
 }
 </style>

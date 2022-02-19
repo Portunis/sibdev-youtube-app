@@ -4,7 +4,7 @@
     <div class="navbar__element">
       <div class="navbar__element-left">
         <UiLogo class="navbar__logo"/>
-        <router-link to="/search">Поиск</router-link>
+        <router-link to="/">Поиск</router-link>
         <router-link to="/favorite">Избранное</router-link>
       </div>
       <div class="navbar__element-right">
@@ -78,6 +78,24 @@ export default {
     width: 48px;
     height: 48px;
     margin: 16px 20px 16px 0;
+  }
+}
+@media screen and (max-width: 320px){
+  .navbar__logo{
+    margin: 16px 5px 16px 0;
+  }
+ .navbar__element-left{
+
+   a{
+     font-size: 16px;
+     margin: 0 10px;
+   }
+ }
+  .navbar__element-right{
+    margin: 0 3px;
+    a{
+      font-size: 16px;
+    }
   }
 }
 </style>

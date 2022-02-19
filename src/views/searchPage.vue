@@ -14,7 +14,7 @@ import SearchVideo from "@/components/searchVideo/searchVideo";
 import ResultSearch from "@/components/searchVideo/resultSearch";
 import {mapActions} from "vuex";
 export default {
-  name: "main",
+  name: "searchPage",
   components: {ResultSearch, SearchVideo, UiNavBar},
   created() {
     this.loadFavorites();

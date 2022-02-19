@@ -5,6 +5,8 @@
     <p @click="runItem">Выполнить</p>
     <p @click="editItem">Изменить</p>
   </div>
+
+
 </div>
 </template>
 
@@ -13,6 +15,11 @@ import { mapState} from "vuex";
 
 export default {
   name: "favoriteItem",
+  data(){
+    return{
+
+    }
+  },
   props:{
     itemFavorites: [Object]
   },
@@ -68,4 +75,23 @@ export default {
     color: #000000;
   }
 }
+@media screen and (max-width: 320px){
+  .favorite__item{
+    h3{
+      width: 120px;
+      overflow: hidden;
+    }
+  }
+  .favorite__item-btn{
+    flex-direction: column;
+    align-items: flex-end;
+    p{
+      margin: 5px 0;
+    }
+  }
+
+
+
+}
+
 </style>

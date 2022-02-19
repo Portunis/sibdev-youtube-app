@@ -27,4 +27,11 @@ export default {
   padding: 15px 60px;
   margin: 40px 0;
 }
+@media screen and (max-width: 320px){
+  .button{
+    font-size: 16px;
+    width: 91px;
+    padding: 15px 25px;
+  }
+}
 </style>
