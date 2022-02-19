@@ -4,7 +4,7 @@ import users from '@/localAPI/users.json'
 import router from "@/router";
 
 const QUERY_URL = 'https://www.googleapis.com/youtube/v3/search?' //QUERY URL YOUTUBE
-const API_KEY = 'AIzaSyB0TF09lrWBfkntzfKz4SGuwBGeTzh_L_A' //API YOUTUBE KEY
+const API_KEY = '' //API YOUTUBE KEY
 
 export default createStore({
     state: {
