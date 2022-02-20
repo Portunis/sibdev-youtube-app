@@ -33,10 +33,13 @@ export default {
 .input[type=text]:focus {
   background: rgba(197, 228, 249, 0.3);
   border: 1px solid #1390E5;
+
+
 }
 .input[type=password]:focus {
   background: rgba(197, 228, 249, 0.3);
   border: 1px solid #1390E5;
+
 }
 .input.active{
   background: rgba(197, 228, 249, 0.3);

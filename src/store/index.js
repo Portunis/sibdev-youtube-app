@@ -59,15 +59,23 @@ export default createStore({
         }
     },
     getters: {
-        GET_VIDEOS(state) {
-            return state.videosID;
-        },//Получаю видео
+        GET_VIDEOS(state){
+            return [...state.videosID].map((item) => {
+                console.log('Сортирую видео:', item.snippet)
+                return item.snippet
+            })
+        },
         GET_SAVE_VIDEOS(state){
             return state.saveSearch;
         }, //Получаю сохранные избранные
         LOGGED_IN(state) {
             return state.token !== null;
         }, //Проверка что пользователь авторизирован
+
+        GET_UPDATE_SEARCH_QUERY(state){
+            return state.editObj = [...state.saveSearch].find(item => item === state.editObj)
+        }
+
 
     },
     actions: {
@@ -88,7 +96,7 @@ export default createStore({
                 commit('setCountVideoSearch', data.pageInfo.totalResults)
                 console.log('Количество найдено:', data.pageInfo.totalResults)
                 commit('setNameVideo', payload.title)
-                dispatch('sortedVideo', data)
+                commit('setVideos', data.items)
                 router.push('/')
             }catch (e){
                 commit('isErrorFetch', true)
@@ -102,15 +110,7 @@ export default createStore({
 
 
         },  //Получем данные для поиска и отправляем запрос на получение видео
-        sortedVideo({commit}, payload) {
-            console.log('sort', payload)
-            let videos = payload.items.map((item) => {
 
-                return item.snippet
-            })
-            commit('setVideos', videos)
-
-        },//Перебераем полученные видео
         saveSearchRequest({commit, state, dispatch}, payload){
             let saveSearch = state.saveSearch || [];
             saveSearch.push(payload);
@@ -129,13 +129,8 @@ export default createStore({
 
             console.log('Загрузка local favorite', loadSaveSearch)
         }, //Обновляем state и подгружаем данные из localStorage
-        getUpdateSearchQuery({commit, state}, payload){
-
-            let editQuery = state.saveSearch.find(item => item === payload)
-            if(editQuery){
-                console.log('editQuery',payload)
-                commit('editObj', payload)
-            }
+        getUpdateSearchQuery({commit}, payload){
+           commit('editObj', payload)
         },//Получаем данные из избранного о редактируемом объекте, ищем его и сохраняем
         updateSearchQuery({commit,state}, payload){
             console.log('updateSearchQuery',payload)

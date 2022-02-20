@@ -3,36 +3,37 @@
     <h2>Поиск видео</h2>
     <div class="search">
 
-      <UiInput type="text" class="search__input"  :model-value="resultNameVideo" v-model="post.title"  placeholder="Что хотите посмотреть ?" />
+      <UiInput type="text" class="search__input" :placeholder="resultNameVideo" v-model="post.title"
+               placeholder="Что хотите посмотреть ?"/>
       <transition name="notification">
-      <div v-if="resultNameVideo.length" @click="showDialog" class="search__favorite">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-              d="M20.8401 4.60999C20.3294 4.099 19.7229 3.69364 19.0555 3.41708C18.388 3.14052 17.6726 2.99817 16.9501 2.99817C16.2276 2.99817 15.5122 3.14052 14.8448 3.41708C14.1773 3.69364 13.5709 4.099 13.0601 4.60999L12.0001 5.66999L10.9401 4.60999C9.90843 3.5783 8.50915 2.9987 7.05012 2.9987C5.59109 2.9987 4.19181 3.5783 3.16012 4.60999C2.12843 5.64169 1.54883 7.04096 1.54883 8.49999C1.54883 9.95903 2.12843 11.3583 3.16012 12.39L4.22012 13.45L12.0001 21.23L19.7801 13.45L20.8401 12.39C21.3511 11.8792 21.7565 11.2728 22.033 10.6053C22.3096 9.93789 22.4519 9.22248 22.4519 8.49999C22.4519 7.77751 22.3096 7.0621 22.033 6.39464C21.7565 5.72718 21.3511 5.12075 20.8401 4.60999V4.60999Z"
-              stroke="#1390E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <div v-if="resultNameVideo.length" @click="showDialog" class="search__favorite">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M20.8401 4.60999C20.3294 4.099 19.7229 3.69364 19.0555 3.41708C18.388 3.14052 17.6726 2.99817 16.9501 2.99817C16.2276 2.99817 15.5122 3.14052 14.8448 3.41708C14.1773 3.69364 13.5709 4.099 13.0601 4.60999L12.0001 5.66999L10.9401 4.60999C9.90843 3.5783 8.50915 2.9987 7.05012 2.9987C5.59109 2.9987 4.19181 3.5783 3.16012 4.60999C2.12843 5.64169 1.54883 7.04096 1.54883 8.49999C1.54883 9.95903 2.12843 11.3583 3.16012 12.39L4.22012 13.45L12.0001 21.23L19.7801 13.45L20.8401 12.39C21.3511 11.8792 21.7565 11.2728 22.033 10.6053C22.3096 9.93789 22.4519 9.22248 22.4519 8.49999C22.4519 7.77751 22.3096 7.0621 22.033 6.39464C21.7565 5.72718 21.3511 5.12075 20.8401 4.60999V4.60999Z"
+                stroke="#1390E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
 
-      </div>
+        </div>
       </transition>
       <transition name="notification">
-      <UiNotification  v-if="notification" class="notification__saveSearch">
+        <UiNotification v-if="notification" class="notification__saveSearch">
 
-        <p>Поиск сохранён в разделе «Избранное»</p>
-        <router-link to="/favorite">Перейти в избранное</router-link>
-      </UiNotification>
+          <p>Поиск сохранён в разделе «Избранное»</p>
+          <router-link to="/favorite">Перейти в избранное</router-link>
+        </UiNotification>
       </transition>
       <ui-button @click="searchVideo" class="search__button">Найти</ui-button>
       <transition name="notification">
-      <Modal v-model:show="dialogVisible" >
-        <SaveSearchRequest :searchRequest="resultNameVideo" @create="createFavoritesQuery"  @closeModal="closeDialog"/>
-      </Modal>
+        <Modal v-model:show="dialogVisible">
+          <SaveSearchRequest :searchRequest="resultNameVideo" @create="createFavoritesQuery" @closeModal="closeDialog"/>
+        </Modal>
       </transition>
     </div>
     <div v-if="!isLoading" class="results">
-      <div  class="results__filter">
+      <div class="results__filter">
         <div class="results__query">
-          <p>Видео по запросу <strong>"{{resultNameVideo}}"</strong></p>
-          <span>{{countSearchVideo}}</span>
+          <p>Видео по запросу <strong>"{{ resultNameVideo }}"</strong></p>
+          <span>{{ countSearchVideo }}</span>
         </div>
         <div class="results__view">
 
@@ -54,40 +55,38 @@
           <svg @click="listDisable" width="24" height="24" viewBox="0 0 24 24" fill="none"
                xmlns="http://www.w3.org/2000/svg">
             <g :opacity="changeGrid">
-            <path d="M10 5H5V10H10V5Z" stroke="#272727" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round"/>
-            <path d="M19 5H14V10H19V5Z" stroke="#272727" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round"/>
-            <path d="M19 14H14V19H19V14Z" stroke="#272727" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round"/>
-            <path d="M10 14H5V19H10V14Z" stroke="#272727" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round"/>
+              <path d="M10 5H5V10H10V5Z" stroke="#272727" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+              <path d="M19 5H14V10H19V5Z" stroke="#272727" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+              <path d="M19 14H14V19H19V14Z" stroke="#272727" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+              <path d="M10 14H5V19H10V14Z" stroke="#272727" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
             </g>
 
           </svg>
 
         </div>
       </div>
-      <VideoResults   :getVideo="getVideo" :list="listOn"/>
-
+      <VideoResults :getVideo="getVideo" :list="listOn"/>
     </div>
-    <UiLoading v-if="isLoading" >Загружаю видео...</UiLoading>
+    <UiLoading v-if="isLoading">Загружаю видео...</UiLoading>
     <transition name="notification">
-      <UiNotification v-if="isErrorFetch" >Произошла ошибка запроса, попробуйте позже</UiNotification>
+      <UiNotification v-if="isErrorFetch">Произошла ошибка запроса, попробуйте позже</UiNotification>
     </transition>
-    <div v-if="notFoundVideo">Ничего не найдено</div>
-
   </div>
 </template>
 
 <script>
+import {mapActions, mapState} from 'vuex'
 import UiInput from "@/components/UI/input/uiInput";
 import UiButton from "@/components/UI/button/uiButton";
 import VideoPreview from "@/components/UI/testUI/videoPreview/videoPreview";
 
 import Modal from "@/components/UI/modal/modal";
 import SaveSearchRequest from "@/components/modalCustom/saveSearchRequest";
-import { mapActions, mapState} from 'vuex'
+
 import UiNotification from "@/components/UI/notification/uiNotification";
 import VideoResults from "@/components/video/videoResults";
 import UiLoading from "@/components/UI/loading/uiLoading";
@@ -97,13 +96,14 @@ export default {
   name: "resultSearch",
   components: {
 
-    UiLoading, VideoResults, UiNotification, SaveSearchRequest, Modal, VideoPreview, UiButton, UiInput},
+    UiLoading, VideoResults, UiNotification, SaveSearchRequest, Modal, VideoPreview, UiButton, UiInput
+  },
   data() {
     return {
       listOn: false,
       dialogVisible: false,
       notFound: false,
-      post:{
+      post: {
         title: '',
         maxResults: 12
       },
@@ -116,21 +116,17 @@ export default {
       default: true
     }
   },
-  computed:{
+  computed: {
     ...mapState({
       resultNameVideo: state => state.nameVideo,
       countSearchVideo: state => state.countVideoSearch,
       isLoading: state => state.isLoading,
       isErrorFetch: state => state.isErrorFetch
     }),
-    notFoundVideo(){
-      return this.notFound >= 0 ? this.notFound = false : this.notFound = true
-
+    changeList() {
+      return !this.listOn ? '0.3' : ''
     },
-    changeList(){
-      return  !this.listOn ? '0.3' : ''
-    },
-    changeGrid(){
+    changeGrid() {
       return this.listOn ? '0.3' : ''
     }
 
@@ -141,24 +137,23 @@ export default {
       saveSearch: 'saveSearchRequest'
 
     }),
-    createFavoritesQuery(savePost){
+    createFavoritesQuery(savePost) {
       this.saveSearch(savePost)
       this.dialogVisible = false;
       this.notification = true;
-      setTimeout(()=>{
+      setTimeout(() => {
         this.notification = false;
       }, 5000)
     },
-    searchVideo(){
+    searchVideo() {
       this.notFound = false;
-      console.log('search:',this.post)
+      console.log('search:', this.post)
       const nameVideo = this.post
       this.fetchAPI(nameVideo)
 
 
-
     },
-    closeDialog(){
+    closeDialog() {
       this.dialogVisible = false;
     },
     showDialog() {
@@ -251,24 +246,26 @@ p {
 }
 
 
-.notification{
+.notification {
 
 
-
-
-  &__saveSearch{
+  &__saveSearch {
     position: absolute;
     right: 67px;
     top: 49px;
 
     padding: 15px 15px;
 
-   p{
-     font-size: 16px;
-     color: #272727;
-     opacity: 0.5;
-   }
-    a{
+    p {
+      text-align: left;
+      width: 200px;
+      font-size: 16px;
+      color: #272727;
+      opacity: 0.5;
+    }
+
+    a {
+      text-align: left;
       font-size: 16px;
       margin: 15px 0 0 0;
       color: #1390E5;
@@ -277,24 +274,26 @@ p {
 
 }
 
-@media screen and (max-width: 769px){
-  .notification__saveSearch{
-   width: 230px;
+@media screen and (max-width: 769px) {
+  .notification__saveSearch {
+    width: 230px;
   }
-  .search__favorite{
+  .search__favorite {
     right: 100px;
   }
-  .results__query{
+  .results__query {
     flex-direction: column;
     align-items: flex-start;
-    p{
+
+    p {
       font-size: 12px;
     }
-    span{
+
+    span {
       font-size: 12px;
     }
   }
-  .results__filter{
+  .results__filter {
     align-items: stretch;
   }
 }

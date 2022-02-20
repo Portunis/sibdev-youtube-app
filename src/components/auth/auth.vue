@@ -8,13 +8,13 @@
      <form class="form">
        <div class="form__login">
          <label class="form__inputLabel">Логин</label>
-        <ui-input  type="text" v-model="auth.login"/>
+        <ui-input  type="text" name="login" v-model="auth.login"/>
        </div>
        <div class="form__password">
          <label class="form__inputLabel ">Пароль</label>
-         <ui-input  :type="passwordType" v-model="auth.password" />
+         <ui-input  :type="passwordType" v-model="auth.password" name="password" autocomplete="on"/>
          <a @click="switchPasswordType"  class="form__passwordVisible">
-           <password-eye  :visible="passwordType" :active="activeFocus"/>
+           <password-eye   :visible="passwordType" />
          </a>
        </div>
        <ui-button @click.prevent="loggedUser">Войти</ui-button>
@@ -91,7 +91,12 @@ export default {
 .form{
   &__password{
     position: relative;
+    input{
+      padding: 12px 15px 12px 15px;
+
+    }
   }
+
   &__inputLabel{
     display: inline-block;
     font-family: Roboto, sans-serif;
