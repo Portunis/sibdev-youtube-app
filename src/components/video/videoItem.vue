@@ -80,11 +80,14 @@ export default {
   }
   .video__item.list {
 
+
     p {
       width: 490px;
     }
   }
   .video__img {
+
+  min-width: 216px;
     width: 216px;
     height: 138px;
   }

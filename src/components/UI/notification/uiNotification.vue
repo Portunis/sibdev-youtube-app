@@ -40,5 +40,12 @@ export default {
 
   }
 }
+@media screen and (max-width: 320px){
+  .notification{
+    right: 5px;
+    left: 5px;
+  }
+
+}
 
 </style>

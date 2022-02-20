@@ -17,66 +17,62 @@ export default createStore({
         saveSearch: [], //Сохраненные запросы в localStorage
         token: localStorage.getItem("access_token") || null, // token пользователя
         countVideoSearch: '', //Количество найденных видео
-
     },
     mutations: {
         setVideos(state, payload) {
             state.videosID = payload;
 
         },
-        setNameVideo(state, payload){
+        setNameVideo(state, payload) {
             state.nameVideo = payload;
         },
-        setCountVideoSearch(state, payload){
-          state.countVideoSearch  = payload;
+        setCountVideoSearch(state, payload) {
+            state.countVideoSearch = payload;
         },
-        setSaveSearch(state, payload){
+        setSaveSearch(state, payload) {
             state.saveSearch = payload;
         },
-        setToken(state, payload){
+        setToken(state, payload) {
             state.token = payload;
         },
         destroyToken(state) {
             state.token = null;
             console.log('mutation token clear')
         },
-        setUser(state, payload){
+        setUser(state, payload) {
             state.userId = payload;
             console.log('state user', state.userId)
         },
-        destroyUserInfo(state){
+        destroyUserInfo(state) {
             state.userId = null;
         },
-        editObj(state, payload){
+        editObj(state, payload) {
             state.editObj = payload
-            console.log('editObj',payload)
+            console.log('editObj', payload)
         },
-        isLoading(state, payload){
+        isLoading(state, payload) {
             return state.isLoading = payload
         },
-        isErrorFetch(state, payload){
+        isErrorFetch(state, payload) {
             return state.isErrorFetch = payload
         }
     },
     getters: {
-        GET_VIDEOS(state){
+        GET_VIDEOS(state) {
             return [...state.videosID].map((item) => {
                 console.log('Сортирую видео:', item.snippet)
                 return item.snippet
             })
         },
-        GET_SAVE_VIDEOS(state){
+        GET_SAVE_VIDEOS(state) {
             return state.saveSearch;
         }, //Получаю сохранные избранные
         LOGGED_IN(state) {
             return state.token !== null;
         }, //Проверка что пользователь авторизирован
-
-        GET_UPDATE_SEARCH_QUERY(state){
+        GET_UPDATE_SEARCH_QUERY(state) {
             return state.editObj = [...state.saveSearch].find(item => item === state.editObj)
-        }
-
-
+        },
     },
     actions: {
         async fetchAPI({state, commit, dispatch}, payload) {
@@ -98,42 +94,41 @@ export default createStore({
                 commit('setNameVideo', payload.title)
                 commit('setVideos', data.items)
                 router.push('/')
-            }catch (e){
+            } catch (e) {
                 commit('isErrorFetch', true)
-            }finally {
+            } finally {
                 commit('isLoading', false)
-                setTimeout(()=>{
+                setTimeout(() => {
                     commit('isErrorFetch', false)
                 }, 5000)
             }
 
 
-
         },  //Получем данные для поиска и отправляем запрос на получение видео
-
-        saveSearchRequest({commit, state, dispatch}, payload){
+        saveSearchRequest({commit, state, dispatch}, payload) {
             let saveSearch = state.saveSearch || [];
             saveSearch.push(payload);
             dispatch("addCartLocalStorage", saveSearch);
-            console.log('Принимаем данные для сохранения',payload)
+            console.log('Принимаем данные для сохранения', payload)
         }, //Получаем данные для сохранения в избранное
-        addCartLocalStorage({ commit,dispatch }, payload) {
+        addCartLocalStorage({commit, dispatch}, payload) {
             localStorage.setItem("saveSearch", JSON.stringify(payload));
             dispatch("updateStateCart");
             console.log('Добавляем в local', payload)
         },//Добавляем избранное в  localStorage
-        updateStateCart({commit}, ) {
+        updateStateCart({commit},) {
+
             let loadSaveSearch = localStorage.getItem("saveSearch");
 
             commit("setSaveSearch", JSON.parse(loadSaveSearch));
 
             console.log('Загрузка local favorite', loadSaveSearch)
         }, //Обновляем state и подгружаем данные из localStorage
-        getUpdateSearchQuery({commit}, payload){
-           commit('editObj', payload)
+        getUpdateSearchQuery({commit}, payload) {
+            commit('editObj', payload)
         },//Получаем данные из избранного о редактируемом объекте, ищем его и сохраняем
-        updateSearchQuery({commit,state}, payload){
-            console.log('updateSearchQuery',payload)
+        updateSearchQuery({commit, state}, payload) {
+            console.log('updateSearchQuery', payload)
             let updateQuery = state.saveSearch.map(item => {
                 if (item.id === payload.id) {
                     return payload;
@@ -144,23 +139,23 @@ export default createStore({
             localStorage.setItem("saveSearch", JSON.stringify(updateQuery));
 
         },//Обновляем данный объект и обновляем localStorage
-        getSearchFavorite({commit, state, dispatch}, payload){
-            dispatch('runSearchFavorite',payload)
+        getSearchFavorite({commit, state, dispatch}, payload) {
+            dispatch('runSearchFavorite', payload)
             router.push('/')
         }, //Получем объект для поиска избранного
-        loggedUser({commit, state}, payload){
-            console.log('Получил данные о пользователе',payload)
-           let userAuth = users.find(user => user.name === payload.name && user.password === payload.password)
-            if (userAuth){
+        loggedUser({commit, state}, payload) {
+            console.log('Получил данные о пользователе', payload)
+            let userAuth = users.find(user => user.name === payload.name && user.password === payload.password)
+            if (userAuth) {
                 console.log('данные о польщзовтаеле', userAuth)
-                localStorage.setItem("userInfo", userAuth.id )
-
+                localStorage.setItem("userInfo", userAuth.id)
+                let genToken = Math.random().toString(36).substr(2);
                 commit('setUser', parseInt(userAuth.id))
-                commit('setToken', userAuth.token)
-                localStorage.setItem("access_token", userAuth.token);
+                commit('setToken', genToken + genToken)
+                localStorage.setItem("access_token", state.token);
                 router.push('/')
 
-            }else{
+            } else {
                 console.log('Очистил token')
 
                 localStorage.removeItem("access_token");
@@ -168,14 +163,14 @@ export default createStore({
                 commit('destroyToken')
                 commit('destroyUserInfo')
                 commit('isErrorFetch', true)
-                setTimeout(()=>{
+                setTimeout(() => {
                     commit('isErrorFetch', false)
                 }, 5000)
             }
 
 
         }, //Проверям данные логин/пароль сравниваем и при успехе впускаем пользователя
-        unLoggedUser({commit}){
+        unLoggedUser({commit}) {
             localStorage.removeItem("access_token");
             localStorage.removeItem("userInfo");
             commit('destroyToken')
@@ -185,6 +180,5 @@ export default createStore({
             router.push('/auth')
         } // logout user
     },
-
     modules: {}
 })

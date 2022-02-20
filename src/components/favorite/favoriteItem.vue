@@ -75,6 +75,18 @@ export default {
     color: #000000;
   }
 }
+@media screen and (max-width: 768px){
+  .favorite__item{
+    h3{
+      width: 300px;
+      overflow: hidden;
+    }
+  }
+
+
+
+
+}
 @media screen and (max-width: 320px){
   .favorite__item{
     h3{
