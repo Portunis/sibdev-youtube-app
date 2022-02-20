@@ -3,8 +3,9 @@
     <h2>Поиск видео</h2>
     <div class="search">
 
-      <UiInput type="text" class="search__input"  v-model:model-value="post.title"  placeholder="Что хотите посмотреть ?" />
-      <div @click="showDialog" class="search__favorite">
+      <UiInput type="text" class="search__input"  :model-value="resultNameVideo" v-model="post.title"  placeholder="Что хотите посмотреть ?" />
+      <transition name="notification">
+      <div v-if="resultNameVideo.length" @click="showDialog" class="search__favorite">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
               d="M20.8401 4.60999C20.3294 4.099 19.7229 3.69364 19.0555 3.41708C18.388 3.14052 17.6726 2.99817 16.9501 2.99817C16.2276 2.99817 15.5122 3.14052 14.8448 3.41708C14.1773 3.69364 13.5709 4.099 13.0601 4.60999L12.0001 5.66999L10.9401 4.60999C9.90843 3.5783 8.50915 2.9987 7.05012 2.9987C5.59109 2.9987 4.19181 3.5783 3.16012 4.60999C2.12843 5.64169 1.54883 7.04096 1.54883 8.49999C1.54883 9.95903 2.12843 11.3583 3.16012 12.39L4.22012 13.45L12.0001 21.23L19.7801 13.45L20.8401 12.39C21.3511 11.8792 21.7565 11.2728 22.033 10.6053C22.3096 9.93789 22.4519 9.22248 22.4519 8.49999C22.4519 7.77751 22.3096 7.0621 22.033 6.39464C21.7565 5.72718 21.3511 5.12075 20.8401 4.60999V4.60999Z"
@@ -12,6 +13,7 @@
         </svg>
 
       </div>
+      </transition>
       <transition name="notification">
       <UiNotification  v-if="notification" class="notification__saveSearch">
 
@@ -36,7 +38,7 @@
 
           <svg @click="listActive" width="24" height="24" viewBox="0 0 24 24" fill="none"
                xmlns="http://www.w3.org/2000/svg">
-            <g >
+            <g :opacity="changeList">
               <path d="M8 6H21" stroke="#272727" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M8 12H21" stroke="#272727" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M8 18H21" stroke="#272727" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -51,7 +53,7 @@
 
           <svg @click="listDisable" width="24" height="24" viewBox="0 0 24 24" fill="none"
                xmlns="http://www.w3.org/2000/svg">
-            <g >
+            <g :opacity="changeGrid">
             <path d="M10 5H5V10H10V5Z" stroke="#272727" stroke-width="2" stroke-linecap="round"
                   stroke-linejoin="round"/>
             <path d="M19 5H14V10H19V5Z" stroke="#272727" stroke-width="2" stroke-linecap="round"
@@ -70,7 +72,11 @@
 
     </div>
     <UiLoading v-if="isLoading" >Загружаю видео...</UiLoading>
-    <UiErrorNotification v-if="isErrorFetch" >Произошла ошибка запроса, попробуйте позже</UiErrorNotification>
+    <transition name="notification">
+      <UiNotification v-if="isErrorFetch" >Произошла ошибка запроса, попробуйте позже</UiNotification>
+    </transition>
+    <div v-if="notFoundVideo">Ничего не найдено</div>
+
   </div>
 </template>
 
@@ -85,17 +91,18 @@ import { mapActions, mapState} from 'vuex'
 import UiNotification from "@/components/UI/notification/uiNotification";
 import VideoResults from "@/components/video/videoResults";
 import UiLoading from "@/components/UI/loading/uiLoading";
-import UiErrorNotification from "@/components/UI/error/uiErrorNotification";
+
 
 export default {
   name: "resultSearch",
   components: {
-    UiErrorNotification,
+
     UiLoading, VideoResults, UiNotification, SaveSearchRequest, Modal, VideoPreview, UiButton, UiInput},
   data() {
     return {
       listOn: false,
       dialogVisible: false,
+      notFound: false,
       post:{
         title: '',
         maxResults: 12
@@ -115,7 +122,18 @@ export default {
       countSearchVideo: state => state.countVideoSearch,
       isLoading: state => state.isLoading,
       isErrorFetch: state => state.isErrorFetch
-    })
+    }),
+    notFoundVideo(){
+      return this.notFound >= 0 ? this.notFound = false : this.notFound = true
+
+    },
+    changeList(){
+      return  !this.listOn ? '0.3' : ''
+    },
+    changeGrid(){
+      return this.listOn ? '0.3' : ''
+    }
+
   },
   methods: {
     ...mapActions({
@@ -132,9 +150,11 @@ export default {
       }, 5000)
     },
     searchVideo(){
+      this.notFound = false;
       console.log('search:',this.post)
       const nameVideo = this.post
       this.fetchAPI(nameVideo)
+
 
 
     },
@@ -193,6 +213,7 @@ p {
     margin: 0;
     border-radius: 10px 0 0 10px;
     width: 100%;
+    padding: 12px 60px 12px 15px;
   }
 
   &__button {

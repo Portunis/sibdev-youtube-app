@@ -102,15 +102,14 @@ export default createStore({
 
 
         },  //Получем данные для поиска и отправляем запрос на получение видео
-        sortedVideo({dispatch, commit}, payload) {
+        sortedVideo({commit}, payload) {
             console.log('sort', payload)
-            const videos = payload.items.map((item) => {
+            let videos = payload.items.map((item) => {
 
                 return item.snippet
             })
             commit('setVideos', videos)
 
-            // dispatch('getVideo', videos)
         },//Перебераем полученные видео
         saveSearchRequest({commit, state, dispatch}, payload){
             let saveSearch = state.saveSearch || [];
@@ -132,7 +131,7 @@ export default createStore({
         }, //Обновляем state и подгружаем данные из localStorage
         getUpdateSearchQuery({commit, state}, payload){
 
-            const editQuery = state.saveSearch.find(item => item === payload)
+            let editQuery = state.saveSearch.find(item => item === payload)
             if(editQuery){
                 console.log('editQuery',payload)
                 commit('editObj', payload)
@@ -140,7 +139,7 @@ export default createStore({
         },//Получаем данные из избранного о редактируемом объекте, ищем его и сохраняем
         updateSearchQuery({commit,state}, payload){
             console.log('updateSearchQuery',payload)
-            const updateQuery = state.saveSearch.map(item => {
+            let updateQuery = state.saveSearch.map(item => {
                 if (item.id === payload.id) {
                     return payload;
                 }
@@ -173,19 +172,21 @@ export default createStore({
                 localStorage.removeItem("userInfo");
                 commit('destroyToken')
                 commit('destroyUserInfo')
+                commit('isErrorFetch', true)
+                setTimeout(()=>{
+                    commit('isErrorFetch', false)
+                }, 5000)
             }
 
 
         }, //Проверям данные логин/пароль сравниваем и при успехе впускаем пользователя
-        unLoggedUser({commit, state}){
+        unLoggedUser({commit}){
             localStorage.removeItem("access_token");
             localStorage.removeItem("userInfo");
             commit('destroyToken')
             commit('destroyUserInfo')
             commit('setNameVideo', '')
             commit('setVideos', [])
-
-            state.videosID = []
             router.push('/auth')
         } // logout user
     },

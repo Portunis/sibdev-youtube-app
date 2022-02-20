@@ -13,8 +13,10 @@
   <transition name="notification">
     <UiNotification v-if="notification">
       Данные успешно обновлены
-
     </UiNotification>
+  </transition>
+  <transition name="notification">
+    <UiNotification v-if="isErrorFetch">Произошла ошибка запроса, попробуйте позже</UiNotification>
   </transition>
 
 </div>
@@ -28,7 +30,7 @@ import Modal from "@/components/UI/modal/modal";
 import UiNotification from "@/components/UI/notification/uiNotification";
 export default {
   name: "favorites",
-  components: {UiNotification, Modal, EditSearchRequest, FavoriteItem},
+  components: { UiNotification, Modal, EditSearchRequest, FavoriteItem},
   data(){
     return{
       dialogVisible: false,
@@ -43,7 +45,8 @@ export default {
   computed: {
     ...mapGetters(['GET_SAVE_VIDEOS']),
     ...mapState({
-      editItem: state => state.editObj
+      editItem: state => state.editObj,
+      isErrorFetch: state => state.isErrorFetch
     }),
     reversedItems() {
       return this.GET_SAVE_VIDEOS.slice().reverse();

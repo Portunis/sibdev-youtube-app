@@ -20,6 +20,7 @@
        <ui-button @click.prevent="loggedUser">Войти</ui-button>
      </form>
     </div>
+
   </div>
 </template>
 
@@ -42,6 +43,7 @@ export default {
       }
     }
   },
+
   methods:{
     ...mapActions({
       logged: 'loggedUser'
