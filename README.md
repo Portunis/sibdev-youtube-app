@@ -8,7 +8,11 @@ location ApiKey: /src/store/index.js
 
 const API_KEY = '' //Your api key
 ```
-
+## Users
+```
+1. test:test
+2. qwe:qwe
+```
 ## Stack
 ```
 1. VUE CLI
