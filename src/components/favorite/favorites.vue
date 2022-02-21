@@ -49,7 +49,7 @@ export default {
       isErrorFetch: state => state.isErrorFetch
     }),
     reversedItems() {
-      return this.GET_SAVE_VIDEOS.slice().reverse();
+      return this.GET_SAVE_VIDEOS ? this.GET_SAVE_VIDEOS.slice().reverse() : this.GET_SAVE_VIDEOS ;
     },
 
   },
