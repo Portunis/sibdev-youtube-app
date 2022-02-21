@@ -1,6 +1,6 @@
 <template>
   <div>
-    <UiNavBar/>
+
     <div class="container">
       <Favorites/>
 
@@ -9,11 +9,11 @@
 </template>
 
 <script>
-import UiNavBar from "@/components/UI/navbar/uiNavBar";
+
 import Favorites from "@/components/favorite/favorites";
 export default {
   name: "favorite",
-  components: {Favorites, UiNavBar}
+  components: {Favorites}
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <UiNavBar/>
+
     <div class="container">
       <SearchVideo  />
 
@@ -9,13 +9,13 @@
 </template>
 
 <script>
-import UiNavBar from "@/components/UI/navbar/uiNavBar";
+
 import SearchVideo from "@/components/searchVideo/searchVideo";
 import ResultSearch from "@/components/searchVideo/resultSearch";
 import {mapActions} from "vuex";
 export default {
   name: "searchPage",
-  components: {ResultSearch, SearchVideo, UiNavBar},
+  components: {ResultSearch, SearchVideo},
   created() {
     this.loadFavorites();
   },
